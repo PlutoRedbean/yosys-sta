@@ -1,4 +1,4 @@
-set CLK_PORT_NAME clk
+set CLK_PORT_NAME clock
 if {[info exists env(CLK_PORT_NAME)]} {
   set CLK_PORT_NAME $::env(CLK_PORT_NAME)
 } else {

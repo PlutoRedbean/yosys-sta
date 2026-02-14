@@ -2,11 +2,19 @@ PROJ_PATH = $(shell pwd)
 SHELL := /bin/bash
 
 O ?= $(PROJ_PATH)/result
-DESIGN ?= gcd
+DESIGN ?= Mundus
 SDC_FILE ?= $(PROJ_PATH)/scripts/default.sdc
-RTL_FILES ?= $(shell find $(PROJ_PATH)/example -name "*.v")
+# RTL_FILES ?= $(shell find $(PROJ_PATH)/example -name "*.v")
+
+CORE_SRCS  := $(shell find $(abspath $(NPC_HOME)/vsrc/Mundus) -name "*.v")
+MODULE_SRCS:= $(shell find $(abspath $(NPC_HOME)/vsrc/modules) -name "*.v")
+
+RTL_FILES  := $(CORE_SRCS) $(MODULE_SRCS)
+V_INC_PATH := $(NPC_HOME)/vsrc/include \
+			  $(NPC_HOME)/configs/build/vsrc/include
+
 export CLK_FREQ_MHZ ?= 500
-export CLK_PORT_NAME ?= clk
+export CLK_PORT_NAME ?= clock
 PDK = icsprout55
 
 RESULT_DIR = $(O)/$(DESIGN)-$(CLK_FREQ_MHZ)MHz
@@ -22,7 +30,7 @@ init:
 syn: $(NETLIST_SYN_V)
 $(NETLIST_SYN_V): $(RTL_FILES) $(SCRIPT_DIR)/yosys.tcl
 	mkdir -p $(@D)
-	echo tcl $(SCRIPT_DIR)/yosys.tcl $(DESIGN) $(PDK) \"$(RTL_FILES)\" $@ | yosys -g -l $(@D)/yosys.log -s -
+	echo tcl $(SCRIPT_DIR)/yosys.tcl $(DESIGN) $(PDK) \"$(RTL_FILES)\" $@ \"$(V_INC_PATH)\" | yosys -g -l $(@D)/yosys.log -s -
 
 sta: $(TIMING_RPT)
 $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_SYN_V)
