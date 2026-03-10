@@ -178,7 +178,7 @@ yosys -import
 # read verilog include files
 set inc_args []
 foreach dir $VERILOG_INCLUDE_DIRS {
-    lappend inc_args "-I$dir"
+  lappend inc_args "-I$dir"
 }
 
 # read verilog files

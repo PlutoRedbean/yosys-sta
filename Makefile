@@ -7,13 +7,16 @@ SDC_FILE ?= $(PROJ_PATH)/scripts/default.sdc
 # RTL_FILES ?= $(shell find $(PROJ_PATH)/example -name "*.v")
 
 CORE_SRCS  := $(shell find $(abspath $(NPC_HOME)/vsrc/Mundus) -name "*.v")
+CORE_SRCS  += $(shell find $(abspath $(NPC_HOME)/vsrc/build) -name "*.v")
 MODULE_SRCS:= $(shell find $(abspath $(NPC_HOME)/vsrc/modules) -name "*.v")
 
 RTL_FILES  := $(CORE_SRCS) $(MODULE_SRCS)
 V_INC_PATH := $(NPC_HOME)/vsrc/include \
 			  $(NPC_HOME)/configs/build/vsrc/include
 
-export CLK_FREQ_MHZ ?= 500
+SCHEMATIC = $(O)/schematic
+
+export CLK_FREQ_MHZ ?= 5000
 export CLK_PORT_NAME ?= clock
 PDK = icsprout55
 
@@ -35,6 +38,10 @@ $(NETLIST_SYN_V): $(RTL_FILES) $(SCRIPT_DIR)/yosys.tcl
 sta: $(TIMING_RPT)
 $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_SYN_V)
 	set -o pipefail && ./bin/iEDA -script $^ $(DESIGN) $(PDK) 2>&1 | tee $(RESULT_DIR)/sta.log
+
+sch: $(RTL_FILES) $(SCRIPT_DIR)/sch.tcl
+	echo tcl $(SCRIPT_DIR)/sch.tcl $(DESIGN) \"$(RTL_FILES)\" \"$(V_INC_PATH)\" "$(O)/schematic" | yosys
+	xdot $(SCHEMATIC).dot
 
 clean:
 	-rm -rf result/
