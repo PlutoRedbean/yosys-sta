@@ -7,9 +7,10 @@ DESIGN ?= Mundus
 SDC_FILE ?= $(PROJ_PATH)/scripts/default.sdc
 # RTL_FILES ?= $(shell find $(PROJ_PATH)/example -name "*.v")
 
-CORE_SRCS  := $(shell find $(abspath $(NPC_HOME)/vsrc/Mundus) -name "*.v")
-CORE_SRCS  += $(shell find $(abspath $(NPC_HOME)/vsrc/build) -name "*.v")
-MODULE_SRCS:= $(shell find $(abspath $(NPC_HOME)/vsrc/modules) -name "*.v")
+MUNDUS_VSRC_DIR  := $(NPC_HOME)/vsrc
+CORE_SRCS  := $(shell find $(abspath $(MUNDUS_VSRC_DIR)/Mundus) -name "*.v")
+CORE_SRCS  += $(shell find $(abspath $(MUNDUS_VSRC_DIR)/build) -name "*.v")
+MODULE_SRCS:= $(shell find $(abspath $(MUNDUS_VSRC_DIR)/modules) -name "*.v")
 
 RTL_FILES  := $(CORE_SRCS) $(MODULE_SRCS)
 V_INC_PATH := $(NPC_HOME)/vsrc/include \
