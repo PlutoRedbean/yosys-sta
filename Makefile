@@ -1,3 +1,4 @@
+include $(MUNDUS_HOME)/common.mk
 PROJ_PATH = $(shell pwd)
 SHELL := /bin/bash
 
