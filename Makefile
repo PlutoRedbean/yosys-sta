@@ -42,8 +42,7 @@ $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_SYN_V)
 	set -o pipefail && ./bin/iEDA -script $^ $(DESIGN) $(PDK) 2>&1 | tee $(RESULT_DIR)/sta.log
 
 sch: $(RTL_FILES) $(SCRIPT_DIR)/sch.tcl
-	echo tcl $(SCRIPT_DIR)/sch.tcl $(DESIGN) \"$(RTL_FILES)\" \"$(V_INC_PATH)\" "$(O)/schematic" | yosys
-	xdot $(SCHEMATIC).dot
+	set -o pipefail && echo tcl $(SCRIPT_DIR)/sch.tcl $(DESIGN) \"$(RTL_FILES)\" \"$(V_INC_PATH)\" "$(O)/schematic" | yosys
 
 clean:
 	-rm -rf result/

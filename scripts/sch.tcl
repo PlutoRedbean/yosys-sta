@@ -46,6 +46,6 @@ log "\[INFO\]: Generating schematic to ${OUTPUT_PREFIX}.svg ..."
 # -prefix     : 生成文件的前缀名称
 # -colors     : 根据线宽和类型使用不同的颜色，提高可读性
 # $DESIGN     : 指定要画哪个模块的图
-show -format svg -prefix $OUTPUT_PREFIX -colors 1 $DESIGN
+show -stretch -prefix $OUTPUT_PREFIX -colors 1 $DESIGN
 
 log "\[INFO\]: Schematic generation done."
